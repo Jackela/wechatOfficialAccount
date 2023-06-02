@@ -34,9 +34,9 @@ class Handle(object):
 			if receivedMessage.MsgType == "text":
 				##not implemented
 				##add gpt related functions here
-				print ("replying")
-				content = "怎么你了"
+				content = "test"
 				replyMessage = reply.TextMessage(toUser, fromUser, content)
+				print ("replying")
 				return replyMessage.send()
 			if receivedMessage.MsgType == "image":
 				mediaId = receivedMessage.MediaId
