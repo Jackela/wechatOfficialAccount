@@ -35,7 +35,7 @@ class Handle(object):
 				##not implemented
 				##add gpt related functions here
 				content = "怎么你了"
-				replyMessage = reply.TextMessage(toUserName, tromUserName, content)
+				replyMessage = reply.TextMessage(toUser, fromUser, content)
 				return replyMessage.send()
 			if receivedMessage.MsgType == "image":
 				mediaId = receivedMessage.MediaId
