@@ -24,8 +24,9 @@ class Handle(object):
 			return "Check Signature"
 	
 	def POST(self):
+		"""
 		webData = web.data()
-		print("web data:", webData)
+		print("||Web data:", webData)
 		receivedMessage = receive.parseXml(webData)
 		if isinstance(receivedMessage, receive.Message):
 			toUser = receivedMessage.ToUserName
@@ -36,10 +37,10 @@ class Handle(object):
 				##add gpt related functions here
 				content = "test"
 				replyMessage = reply.TextMessage(toUser, fromUser, content)
-				print ("replying")
 				return replyMessage.send()
 			if receivedMessage.MsgType == "image":
 				mediaId = receivedMessage.MediaId
 				replyMessage = reply.ImageMessage(toUserName, fromUserName, mediaId)
 				return replyMessage.send()
+		"""
 		return "success"

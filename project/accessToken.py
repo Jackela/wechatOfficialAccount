@@ -23,10 +23,11 @@ class AccessToken(object):
         self.__accessToken = accessToken
         self.__leftTime = expireIn
         self.__expireTime = expireIn
+        print (accessToken)
         self.countDown()
 
     def isTimeout(self):
-        return self.__leftTime <= timeoutRedundance
+        return self.__leftTime <= 0 + timeoutRedundance
 
 
     def refreshAccessToken(self):
@@ -44,6 +45,8 @@ class AccessToken(object):
     ##for testing
     def getTimeLeft(self):
         print(self.__leftTime)
+    def getAccessToken(self):
+        return self.__accessToken
 
 if __name__ == "__main__":
-    getAccessToken()
+    print(getAccessToken().getAccessToken())
