@@ -2,6 +2,7 @@ import web
 import hashlib
 import receive
 import reply
+import openai
 from chatBot import OpenAIChatbot
 openai.api_key = "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"
 
