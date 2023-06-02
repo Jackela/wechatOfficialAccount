@@ -29,8 +29,8 @@ class Handle(object):
 		print("||Web data:", webData)
 		receivedMessage = receive.parseXml(webData)
 		if isinstance(receivedMessage, receive.Message):
-			toUser = receivedMessage.ToUserName
-			fromUser = receivedMessage.FromUserName
+			toUser = receivedMessage.FromUserName
+			fromUser = receivedMessage.ToUserName
 			##guarder type if loops
 			if receivedMessage.MsgType == "text":
 				##not implemented
