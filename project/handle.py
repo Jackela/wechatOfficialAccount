@@ -37,8 +37,8 @@ class Handle(object):
 				##add gpt related functions here
 				content = "test"
 				replyMessage = reply.TextMessage(toUser, fromUser, content)
-				replyMessage.send()
-				return "<xml> <ToUserName><![CDATA[k740724287]]></ToUserName> <FromUserName><![CDATA[wx0699a80ad3228fe1]]></FromUserName><CreateTime>1460541339</CreateTime><MsgType><![CDATA[text]]></MsgType><Content><![CDATA[test]]></Content></xml>"
+				return replyMessage.send()
+				
 			if receivedMessage.MsgType == "image":
 				mediaId = receivedMessage.MediaId
 				replyMessage = reply.ImageMessage(toUserName, fromUserName, mediaId)
