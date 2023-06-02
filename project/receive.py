@@ -11,7 +11,7 @@ def parseXml(data):
         return ImageMessage(xmlData)
 
 class Message(object):
-    def __init__(self):
+    def __init__(self,xmlData):
         ## msg short for message
         self.ToUserName = xmlData.find('ToUserName').text
         self.FromUserName = xmlData.find('FromUserName').text
