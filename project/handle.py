@@ -35,7 +35,7 @@ class Handle(object):
 				##not implemented
 				##add gpt related functions here
 				print ("replying")
-				content = "HSDAD"
+				content = "怎么你了"
 				replyMessage = reply.TextMessage(toUser, fromUser, content)
 				return replyMessage.send()
 			if receivedMessage.MsgType == "image":
