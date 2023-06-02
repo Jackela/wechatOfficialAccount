@@ -42,3 +42,4 @@ class Handle(object):
 				mediaId = receivedMessage.MediaId
 				replyMessage = reply.ImageMessage(toUserName, fromUserName, mediaId)
 				return replyMessage.send()
+		return "success"
