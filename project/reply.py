@@ -12,11 +12,11 @@ class Message:
         return "success"
 
 class TextMessage:
-    def __init__(self, toUserName, tromUserName, content):
+    def __init__(self, toUserName, fromUserName, content):
         self.messageDictionary = dict()
         self.messageDictionary['ToUserName'] = toUserName
         self.messageDictionary['FromUserName'] = fromUserName
-        self.messageDictionary['CreateTime'] = int(ttime.time())
+        self.messageDictionary['CreateTime'] = int(time.time())
         self.messageDictionary['MsgType'] = "text"
         self.messageDictionary['Content'] = content
 
