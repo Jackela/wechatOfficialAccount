@@ -29,13 +29,16 @@ class Handle(object):
 		print("||Web data:", webData)
 		receivedMessage = receive.parseXml(webData)
 		if isinstance(receivedMessage, receive.Message):
+			##swap to and from user 
+			##发信收信双方角色对调
 			toUser = receivedMessage.FromUserName
 			fromUser = receivedMessage.ToUserName
 			##guarder type if loops
 			if receivedMessage.MsgType == "text":
 				##not implemented
 				##add gpt related functions here
-				content = "test"
+				chatbot = OpenAIChatbot()
+				content = chatbot.generate_response(receivedMessage.Content)
 				replyMessage = reply.TextMessage(toUser, fromUser, content)
 				return replyMessage.send()
 
