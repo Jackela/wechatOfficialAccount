@@ -28,14 +28,14 @@ class Handle(object):
 		print("web data:", webData)
 		receivedMessage = receive.parseXml(webData)
 		if isinstance(receivedMessage, receive.Message):
-			print("ahaha")
 			toUser = receivedMessage.ToUserName
 			fromUser = receivedMessage.FromUserName
 			##guarder type if loops
 			if receivedMessage.MsgType == "text":
 				##not implemented
 				##add gpt related functions here
-				content = "怎么你了"
+				print ("replying")
+				content = "HSDAD"
 				replyMessage = reply.TextMessage(toUser, fromUser, content)
 				return replyMessage.send()
 			if receivedMessage.MsgType == "image":
