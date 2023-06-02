@@ -1,7 +1,7 @@
 import openai
 import time
 
-openai.api_key = "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"
+openai.api_key = "replace"
 
 
 class OpenAIChatbot:

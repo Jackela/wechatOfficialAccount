@@ -4,7 +4,7 @@ import receive
 import reply
 import openai
 from chatBot import OpenAIChatbot
-openai.api_key = "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"
+openai.api_key = "Replace"
 
 class Handle(object):
 	def GET(self):
