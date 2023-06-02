@@ -42,6 +42,7 @@ class Handle(object):
 				chatbot = OpenAIChatbot()
 				print("received: ", receivedMessage.Content)
 				content = chatbot.generate_response(receivedMessage.Content.decode("utf-8"))
+				print("sent: ", content)
 				replyMessage = reply.TextMessage(toUser, fromUser, content)
 				return replyMessage.send()
 
