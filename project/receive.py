@@ -17,7 +17,7 @@ class Message(object):
         self.FromUserName = xmlData.find('FromUserName').text
         self.CreateTime = xmlData.find('CreateTime').text
         self.MsgType = xmlData.find('MsgType').text
-        self.MsgID = xmlData.find('MsgId').text\
+        self.MsgID = xmlData.find('MsgId').text
 
 class TextMessage(Message):
     def __init__(self, xmlData):

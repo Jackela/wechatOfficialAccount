@@ -25,7 +25,7 @@ class Handle(object):
 	
 	def POST(self):
 		webData = web.data()
-		print("web data:" + webData)
+		print("web data:", webData)
 		receivedMessage = receive.parseXml(webData)
 		if isinstance(receivedMessage, receive.Message):
 			toUser = receivedMessage.toUser
