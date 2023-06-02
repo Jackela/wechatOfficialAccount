@@ -41,7 +41,7 @@ class Handle(object):
 				##add gpt related functions here
 				chatbot = OpenAIChatbot()
 				print("received: ", receivedMessage.Content)
-				content = chatbot.generate_response(receivedMessage.Content.toString())
+				content = chatbot.generate_response(receivedMessage.Content.decode("utf-8"))
 				replyMessage = reply.TextMessage(toUser, fromUser, content)
 				return replyMessage.send()
 
