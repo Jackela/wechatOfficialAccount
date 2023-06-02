@@ -28,6 +28,7 @@ class Handle(object):
 		print("web data:", webData)
 		receivedMessage = receive.parseXml(webData)
 		if isinstance(receivedMessage, receive.Message):
+			print("ahaha")
 			toUser = receivedMessage.ToUserName
 			fromUser = receivedMessage.FromUserName
 			##guarder type if loops
