@@ -1,5 +1,7 @@
 import web
 import hashlib
+import receive
+import reply
 
 
 class Handle(object):
@@ -20,3 +22,22 @@ class Handle(object):
 			return data.echostr
 		else:
 			return "Check Signature"
+	
+	def POST(self):
+		webData = web.data()
+		print("web data:" + webData)
+		receivedMessage = receive.parseXml(webData)
+		if isinstance(receivedMessage, receive.Message):
+			toUser = receivedMessage.toUser
+			fromUser = receivedMessage.fromUser
+			##guarder type if loops
+			if receivedMessage.MsgType == "text":
+				##not implemented
+				##add gpt related functions here
+				content = "怎么你了"
+				replyMessage = reply.TextMessage(toUserName, tromUserName, content)
+				return replyMessage.send()
+			if receivedMessage.MsgType == "image":
+				mediaId = receivedMessage.MediaId
+				replyMessage = reply.ImageMessage(toUserName, fromUserName, mediaId)
+				return replyMessage.send()
