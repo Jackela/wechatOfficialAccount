@@ -38,10 +38,9 @@ class Handle(object):
 				content = "test"
 				replyMessage = reply.TextMessage(toUser, fromUser, content)
 				return replyMessage.send()
-				
+
 			if receivedMessage.MsgType == "image":
 				mediaId = receivedMessage.MediaId
 				replyMessage = reply.ImageMessage(toUserName, fromUserName, mediaId)
 				return replyMessage.send()
-				return "success"
 		return "success"

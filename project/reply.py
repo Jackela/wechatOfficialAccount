@@ -31,6 +31,8 @@ class TextMessage:
             </xml>
             """
         XmlForm.format(**self.messageDictionary)
+
+
         
     
 class ImageMessage:
