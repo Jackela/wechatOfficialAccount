@@ -21,11 +21,11 @@ class Message(object):
 
 class TextMessage(Message):
     def __init__(self, xmlData):
-        Message.__init__(self)
+        Message.__init__(self, xmlData)
         self.Content = xmlData.find('Content').text.encode("utf-8")
 
 class ImageMessage(Message):
     def __init__(self, xmlData):
-        Message.__init__(self)
+        Message.__init__(self, xmlData)
         self.PicUrl = xmlData.find('PicUrl').text
         self.MediaId = xmlData.find('MediaId').text
