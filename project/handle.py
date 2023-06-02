@@ -3,6 +3,7 @@ import hashlib
 import receive
 import reply
 from chatBot import OpenAIChatbot
+openai.api_key = "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"
 
 class Handle(object):
 	def GET(self):
