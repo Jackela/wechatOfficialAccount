@@ -46,7 +46,8 @@ class AccessToken(object):
     def getTimeLeft(self):
         print(self.__leftTime)
     def getAccessToken(self):
-        return self.__accessToken
+        print(self.__accessToken)
 
 if __name__ == "__main__":
-    print(getAccessToken().getAccessToken())
+    getAccessToken().getAccessToken()
+    

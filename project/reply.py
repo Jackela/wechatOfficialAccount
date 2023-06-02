@@ -30,7 +30,7 @@ class TextMessage:
                 <Content><![CDATA[{Content}]]></Content>
             </xml>
             """
-        XmlForm.format(**self.messageDictionary)
+        return XmlForm.format(**self.messageDictionary)
 
 
         
