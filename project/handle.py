@@ -4,7 +4,7 @@ import receive
 import reply
 import openai
 from chatBot import OpenAIChatbot
-openai.api_key = "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"
+openai.api_key = "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"
 
 class Handle(object):
 	def GET(self):
