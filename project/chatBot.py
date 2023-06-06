@@ -148,6 +148,9 @@ def create_moderation(message:str):
     return openai.Moderation.create(
         input = message
     )
+## Models compatibility
+## 参考以下网址 模型对于各项功能是否适用
+## https://platform.openai.com/docs/models/model-endpoint-compatibility
 
 def list_models():
     return openai.Model.list().data
