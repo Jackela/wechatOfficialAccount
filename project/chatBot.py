@@ -13,55 +13,117 @@ def initialize_api_key():
 initialize_api_key()
 
 instruct_model = ["ada", "babbage", "curie", "davinci"]
-default_max_tokens=3000
-default_model = "gpt-3.5-turbo"## default model
+default_max_tokens=1000 ## need further configuration
+default_text_model = "text-davinci-003" ## default text model
+default_chat_model = "gpt-3.5-turbo" ## default chat model
 default_audio_model = "whisper-1"
 # use "model" instead of "engine" !!!!!!!!!!!!!
-def create_text_completion(message:str, name:Optional[str]=None, model:str=None, max_tokens:int=None, n:int=1, stream:bool = False, stop:Union[str, List[str]]=None,
-        temperature:float=0.5, logit_bias:Dict[str, float]=None, user:str=None) -> str:
+def create_text_completion(message:str, model:str=None, prompt_text:str=None, suffix:Optional[str]=None, max_tokens:int=None,  temperature:float=None, 
+        top_p:float=None, n:int=None, stream:bool = None, logprobs:int=None, echo:bool=None, stop:Union[str, List[str]]=None, presence_penalty:float=None,
+        frequency_penalty:float=None, best_of:int=None, logit_bias:Dict[str, float]=None, user:str=None) -> str:
 
-    prompt_text = f"Conversation with OpenAI Chatbot:\nUser: {message}\nAI:"
+    params = {
+        "model": model or default_text_model,
+        "prompt": prompt_text or f"Conversation with OpenAI Chatbot:\nUser: {message}\nAI:",
+        "max_tokens": max_tokens or default_max_tokens
+    }
+    if suffix is not None:
+        params["suffix"] = suffix
 
+    if top_p is not None:
+        params["top_p"] = top_p
 
-    response = openai.Completion.create(
-        engine=model or default_model,
-        prompt=prompt_text,
-        max_tokens=max_tokens or default_max_tokens,
-        n=n,
-        stream = stream,
-        stop=stop,
-        temperature=temperature,
-        logit_bias=logit_bias or {},
-        user=user or ""
-    )
+    if logprobs is not None:
+        params["logprobs"] = logprobs
 
-    return response.choices[0].text.strip()
+    if echo is not None:
+        params["echo"] = echo
 
-def create_chat_completion(content:str, name:Optional[str]=None, model:str=None, max_tokens:int=None, role:str= "user", 
-        temperature:float=1, top_p:float=1, n:int=1, stream:bool=False, stop:Union[str, List[str]]=None,
-        presence_penalty:float=0, frequency_penalty:float=0,
-        logit_bias:Dict[str, float]=None, user:str=None):
-    messages = [
-        {"role": role, "content": content}
-    ]
-    if name is not None:
-        messages[0]["name"] = name
-    response = openai.ChatCompletion.create(
-        model = model or default_model,
-        messages = messages,
-        temperature = temperature,
-        max_tokens = max_tokens or default_max_tokens,
-        top_p = top_p,
-        n = n,
-        stream = stream,
-        stop = stop,
-        presence_penalty = presence_penalty,
-        frequency_penalty = frequency_penalty,
-        logit_bias = logit_bias or {},
-        user = user or ""
-    )
-    return response.choices[0].message.content
+    if presence_penalty is not None:
+        params["presence_penalty"] = presence_penalty
+
+    if frequency_penalty is not None:
+        params["frequency_penalty"] = frequency_penalty
+
+    if best_of is not None:
+        params["best_of"] = best_of
+
+    if n is not None:
+        params["n"] = n
+
+    if stream is not None:
+        params["stream"] = stream
+
+    if stop is not None:
+        params["stop"] = stop
+
+    if temperature is not None:
+        params["temperature"] = temperature
+
+    if logit_bias is not None:
+        params["logit_bias"] = logit_bias
+
+    if user is not None:
+        params["user"] = user
+
+    response = openai.Completion.create(**params)
+
+    if response.choices:
+        return response.choices[0].text.strip()
+    else:
+        return ""
+
+def create_chat_completion(content: str, role: str = "user", name: Optional[str] = None,
+            model: str = None, max_tokens: int = None, temperature: float = None,
+            top_p: float = None, n: int = None, stream: bool = None,
+            stop: Union[str, List[str]] = None, presence_penalty: float = None,
+            frequency_penalty: float = None, logit_bias: Dict[str, float] = None,
+            user: str = None) -> str:
     
+    params = {
+        "model": model or default_chat_model,
+        "messages": [{"role": role, "content": content}],
+        "max_tokens": max_tokens or default_max_tokens
+    }
+    
+    if name is not None:
+        params["messages"][0]["name"] = name
+        
+    if temperature is not None:
+        params["temperature"] = temperature
+        
+    if top_p is not None:
+        params["top_p"] = top_p
+        
+    if n is not None:
+        params["n"] = n
+        
+    if stream is not None:
+        params["stream"] = stream
+        
+    if stop is not None:
+        params["stop"] = stop
+        
+    if presence_penalty is not None:
+        params["presence_penalty"] = presence_penalty
+        
+    if frequency_penalty is not None:
+        params["frequency_penalty"] = frequency_penalty
+        
+    if logit_bias is not None:
+        params["logit_bias"] = logit_bias
+        
+    if user is not None:
+        params["user"] = user
+        
+    response = openai.ChatCompletion.create(**params)
+    
+    if response.choices:
+        return response.choices[0].message.content
+    else:
+        return ""
+
+
 ## text-davinci-edit-001 or code-davinci-edit-001
 ## or use list_edit_model_ids() to get list of models
 def create_text_edit(model, message: str, instruction: str):
@@ -77,7 +139,7 @@ def create_text_edit(model, message: str, instruction: str):
 # image:str is file encoded in base64
 def create_image(prompt: str, image_number: int = 1, size: str = "1024x1024", response_format: str = "url"):
     response = openai.Image.create(
-        prompt=message,
+        prompt=prompt,
         n=image_number,
         size=size,
         response_format=response_format
@@ -202,10 +264,10 @@ def change_default_audio_model(model: str):
         return False
 
 ## only for "orgnization"
-## 组织相关 暂未测试
 def list_orgnization_files():
     return openai.File.list().data
 
+## valid purpose: "fine-tune"
 def upload_orgnization_file(file:str, purpose:str):
     return openai.File.create(file=file, purpose=purpose)  
 
@@ -221,28 +283,52 @@ def receive_orgnization_file_content(file_id:str):
 
 ## fine tune
 ## 用于微调
-## 组织相关 暂未测试
-def create_fine_tune(file_id, model:str,  n_epochs=4
-, batch_size=None, learning_rate_multiplier=None, prompt_loss_weight=0.01
-, compute_classification_metrics=False, classification_n_classes=None
-, classification_positive_class=None, classification_betas=None
-, suffix=None, validation_file_id=None):
-    if model in instruct_model:
-        return openai.FineTune.create(
-            file=file_id,
-            model=model,
-            n_epochs=n_epochs,
-            batch_size=batch_size,
-            learning_rate_multiplier=learning_rate_multiplier,
-            prompt_loss_weight=prompt_loss_weight,
-            compute_classification_metrics=compute_classification_metrics,
-            classification_n_classes=classification_n_classes,
-            classification_positive_class=classification_positive_class,
-            classification_betas=classification_betas,
-            suffix=suffix,
-            validation_file=validation_file_id
-        )
-    return False
+## Data Formatting
+## https://platform.openai.com/docs/guides/fine-tuning/data-formatting
+## Token limits for GPT-3 (instrcut models: ada, babbage, curie, davinci) = 2049 tokens
+## https://platform.openai.com/docs/models/gpt-3
+def create_fine_tune(file_id, validation_file_id=None, model=None, n_epochs=None,
+        batch_size=None, learning_rate_multiplier=None, prompt_loss_weight=None,
+        compute_classification_metrics=None, classification_n_classes=None,
+        classification_positive_class=None, classification_betas=None,
+        suffix=None):
+
+    params = {"training_file": file_id}
+    if validation_file_id:
+        params["validation_file"] = validation_file_id
+        
+    if model:
+        params["model"] = model
+        
+    if n_epochs is not None:
+        params["n_epochs"] = n_epochs
+        
+    if batch_size is not None:
+        params["batch_size"] = batch_size
+        
+    if learning_rate_multiplier is not None:
+        params["learning_rate_multiplier"] = learning_rate_multiplier
+        
+    if prompt_loss_weight is not None:
+        params["prompt_loss_weight"] = prompt_loss_weight
+        
+    if compute_classification_metrics is not None:
+        params["compute_classification_metrics"] = compute_classification_metrics
+        
+    if classification_n_classes is not None:
+        params["classification_n_classes"] = classification_n_classes
+        
+    if classification_positive_class is not None:
+        params["classification_positive_class"] = classification_positive_class
+        
+    if classification_betas is not None:
+        params["classification_betas"] = classification_betas
+        
+    if suffix:
+        params["suffix"] = suffix
+
+    return openai.FineTune.create(**params)
+
 
 def list_fine_tunes():
     fine_tunes = openai.FineTune.list().data
@@ -252,9 +338,13 @@ def list_fine_tune_events(fine_tune_id):
     fine_tune_events = openai.FineTune.list_events(fine_tune_id).data
     return fine_tune_events
 
-def retrieve_fine_tune(fine_tune_id):
-    fine_tune = openai.FineTune.retrieve(fine_tune_id)
-    return fine_tune
+def retrieve_fine_tune_model(fine_tune_id):
+    fine_tune_model = openai.FineTune.retrieve(fine_tune_id)
+    return fine_tune_model
+
+def retrieve_fine_tune_model_config(fine_tune_id):
+    fine_tune_model = retrieve_fine_tune_model(fine_tune_id)
+    return fine_tune_model
 
 def cancel_fine_tune(fine_tune_id):
     return openai.FineTune.cancel(fine_tune_id)
@@ -272,6 +362,28 @@ def get_default_model():
 def get_default_audio_model():
     return default_audio_model
 
+def get_all_orgnization_file_ids():
+    file_list = list_orgnization_files()
+    file_ids = [file_dict['id'] for file_dict in file_list]
+    return file_ids
 
-if __name__ == "__main__":
-    print(list_audio_model_ids())
+def delete_all_orgnization_files():
+    file_ids = get_all_orgnization_file_ids()
+    for file_id in file_ids:
+        delete_orgnization_file(file_id)
+    return True
+
+def get_all_fine_tune_models():
+    model_list = list_fine_tunes()
+    models = [model_dict["fine_tuned_model"] for model_dict in model_list]
+    return models
+
+def delete_all_fine_tune_models():
+    models = get_all_fine_tune_models()
+    for model in models:
+        delete_fine_tune_model(model)
+    return True
+
+if __name__ == "__main__":  
+    res = create_image(prompt="加油华为，加油China。")
+    print(res)
