@@ -442,4 +442,4 @@ if __name__ == "__main__":
     content = "As an AI language model, I cannot have personal opinions. However, according to statistics, Michael Jordan is widely considered one of the greatest basketball players of all time. Other players such as LeBron James, Kobe Bryant, Kareem Abdul-Jabbar, and Magic Johnson are also highly regarded. Ultimately, who is considered the best player depends on personal preference."
 
     res=response_to_user("I want a picture of a cat")
-    print(type(res) == type(content))
+    print(type(res) == type(r"https://oaidalleapiprodscus.blob.core.windows.net/private/org-pUNaTZzDWO5HyEawU3Nltlp9/user-4JZfRsqrs0sThAQ7n0oYjYRa/img-Q8U2E66GoK7AB0VYNYQlQgmq.png?st=2023-06-08T04%3A13%3A23Z&se=2023-06-08T06%3A13%3A23Z&sp=r&sv=2021-08-06&sr=b&rscd=inline&rsct=image/png&skoid=6aaadede-4fb3-4698-a8f6-684d7786b067&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2023-06-07T22%3A23%3A14Z&ske=2023-06-08T22%3A23%3A14Z&sks=b&skv=2021-08-06&sig=nR65Qi4QNnprXIbJ8EZt4SEuwN7MRZ7DmXkTmapLxzw%3D"))
