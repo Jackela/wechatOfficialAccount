@@ -3,7 +3,7 @@ import hashlib
 import receive
 import reply
 import openai
-from chatBot import OpenAIChatbot
+import chatBot
 openai.api_key = "Replace"
 
 class Handle(object):
@@ -39,9 +39,8 @@ class Handle(object):
 			if receivedMessage.MsgType == "text":
 				##not implemented
 				##add gpt related functions here
-				chatbot = OpenAIChatbot()
 				print("received: ", receivedMessage.Content)
-				content = chatbot.create_completion(receivedMessage.Content.decode("utf-8"))
+				content = chatBot.response_to_user(receivedMessage.Content.decode("utf-8"))
 				print("sent: ", content)
 				replyMessage = reply.TextMessage(toUser, fromUser, content)
 				return replyMessage.send()
