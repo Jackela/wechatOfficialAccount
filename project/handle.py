@@ -59,7 +59,7 @@ class Handle(object):
 				print("received: ", receivedMessage.Content)
 				clarified_type, response = chatBot.response_to_user(receivedMessage.Content.decode("utf-8"))
 				print("sent: ", clarified_type, response)
-				if clarified_type == "text":
+				if clarified_type == "chat":
 					replyMessage = reply.TextMessage(toUser, fromUser, response)
 					return replyMessage.send()
 				"""
