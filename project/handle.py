@@ -64,7 +64,7 @@ class Handle(object):
 					return replyMessage.send()
 
 				elif clarified_type == "image":
-					imageUtils.url_to_image(response, "temp.jpg")
+					imageUtils.url_to_image(response)
 					mediaId = imageUtils.upload_image("temp.jpg", accessToken.get_current_access_token())
 					replyMessage = reply.ImageMessage(toUser, fromUser, mediaId)
 					return replyMessage.send()
