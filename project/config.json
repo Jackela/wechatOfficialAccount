@@ -1,5 +1,9 @@
 {
     "openAI": {
-        "apiKey": "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"
+        "apiKey": "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"
+    },
+    "wechat":{
+        "appId": "wx0699a80ad3228fe1",
+        "appSecret":"c59d59e306c6dfad3d3c643ce7af07b6"
     }
 }

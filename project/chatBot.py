@@ -3,13 +3,12 @@ import time
 import os
 import json
 from typing import List, Union, Dict, Optional
-
-openai.api_key = ""  # intialize global api key var
+import imageUtils
 # Get the directory where chatBot.py is located
-chatbot_directory = os.path.dirname(os.path.abspath(__file__))
+directory = os.path.dirname(os.path.abspath(__file__))
 
 # Get the relative path from chatBot.py to config.json
-config_path = os.path.join(chatbot_directory, 'config.json')
+config_path = os.path.join(directory, 'config.json')
 
 def initialize_api_key():
     with open(config_path) as config:
@@ -150,7 +149,7 @@ def create_image(prompt: str, image_number: int = 1, size: str = "1024x1024", re
         size=size,
         response_format=response_format
     )
-    return response.data[0].url
+    return response.data[0]
 
 def create_image_edit(prompt: str, image: str, mask: str = None, image_number: int = 1, size: str = "1024x1024", response_format: str = "url"):
     response = openai.Image.create_edit(
@@ -400,13 +399,14 @@ def response_to_user(message: str):
         response = create_chat_completion(content=message)
     elif clarified_type == "image":
         response = create_image(prompt=message)
+        imageUtils.url_to_image(url=response, filename="temp.jpg")
     """
     else:
         ## log error
         ## not implemented
         pass
     """
-    return response
+    return clarified_type, response
 
 ## for testing
 def get_default_model():
@@ -441,5 +441,6 @@ def delete_all_fine_tune_models():
 if __name__ == "__main__":  
     content = "As an AI language model, I cannot have personal opinions. However, according to statistics, Michael Jordan is widely considered one of the greatest basketball players of all time. Other players such as LeBron James, Kobe Bryant, Kareem Abdul-Jabbar, and Magic Johnson are also highly regarded. Ultimately, who is considered the best player depends on personal preference."
 
-    res=r"" + response_to_user("I want a picture of a cat")
-    print(type(res) == type(r"https://oaidalleapiprodscus.blob.core.windows.net/private/org-pUNaTZzDWO5HyEawU3Nltlp9/user-4JZfRsqrs0sThAQ7n0oYjYRa/img-Q8U2E66GoK7AB0VYNYQlQgmq.png?st=2023-06-08T04%3A13%3A23Z&se=2023-06-08T06%3A13%3A23Z&sp=r&sv=2021-08-06&sr=b&rscd=inline&rsct=image/png&skoid=6aaadede-4fb3-4698-a8f6-684d7786b067&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2023-06-07T22%3A23%3A14Z&ske=2023-06-08T22%3A23%3A14Z&sks=b&skv=2021-08-06&sig=nR65Qi4QNnprXIbJ8EZt4SEuwN7MRZ7DmXkTmapLxzw%3D"))
+    res=response_to_user("I want a picture of a cat")
+
+    print(res)

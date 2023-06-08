@@ -1,53 +1,63 @@
 import requests
 import time
+import json
+import os
 
+appid = ""
+appsecret = ""
+directory = os.path.dirname(os.path.abspath(__file__))
+# Get the relative path from chatBot.py to config.json
+config_path = os.path.join(directory, 'config.json')
+access_token_path = os.path.join(directory, 'access_token.json')
+def initialize_credentials():
+    with open(config_path, 'r') as f:
+        config = json.load(f)
+        appid = config["wechat"]["appId"]
+        appsecret = config["wechat"]["appSecret"]
+        return appid, appsecret
 
-appid = "wx0699a80ad3228fe1"
-appsecret = "c59d59e306c6dfad3d3c643ce7af07b6"
+appid, appsecret = initialize_credentials()
+
+initialize_credentials()
 url = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid={APPID}&secret={APPSECRET}".format(APPID = appid , APPSECRET = appsecret)
 ##the redundance of timeout is to avoid the situation that the token expires before the request is sent
 timeoutRedundance = 10
 def getAccessToken():
     response = requests.get(url).json()
-    return AccessToken(response['access_token'], response['expires_in'])
-
+    access_token, expires_in = response['access_token'], response['expires_in']
+    expires_at = time.time() + expires_in
+    with open(access_token_path, 'w') as f:
+        json.dump({'access_token': access_token, 'expires_at': expires_at}, f)
 
 class AccessToken(object):
     def __init__(self):
         self.__accessToken = ""
-        self.__leftTime = 0
         self.__expireTime = 0
-        self.countDown()
+        self.__expiresAt = time.time()
 
     def __init__(self, accessToken, expireIn):
         self.__accessToken = accessToken
-        self.__leftTime = expireIn
         self.__expireTime = expireIn
-        print (accessToken)
-        self.countDown()
+        self.__expiresAt = time.time() + expireIn
 
     def isTimeout(self):
-        return self.__leftTime <= 0 + timeoutRedundance
+        return self.__expiresAt >= time.time() +  timeoutRedundance
 
-
+    ## Deprecated
     def refreshAccessToken(self):
         response = requests.get(url).json()
         self.__init__(response['access_token'], response['expires_in'])
     
-    def countDown(self):
-        while not self.isTimeout():
-            self.__leftTime -= 5
-            time.sleep(5)
-            self.getTimeLeft()
-        self.refreshAccessToken()
-        countDown()
 
     ##for testing
-    def getTimeLeft(self):
-        print(self.__leftTime)
-    def getAccessToken(self):
+    def __getExpireAt(self):
+        print(self.__expireAt)
+    def __getAccessToken(self):
         print(self.__accessToken)
 
+
+
 if __name__ == "__main__":
-    getAccessToken().getAccessToken()
+    res = getAccessToken()
     
+    print(res)

@@ -6,13 +6,15 @@ import openai
 import chatBot
 import os
 import json
-openai.api_key = "Replace"
-openai.api_key = ""  # intialize global api key var
+import imageUtils
+import accessToken
 # Get the directory where chatBot.py is located
-chatbot_directory = os.path.dirname(os.path.abspath(__file__))
+directory = os.path.dirname(os.path.abspath(__file__))
 
 # Get the relative path from chatBot.py to config.json
-config_path = os.path.join(chatbot_directory, 'config.json')
+config_path = os.path.join(directory, 'config.json')
+
+access_token = accessToken.getAccessToken()
 
 def initialize_api_key():
     with open(config_path) as config:
@@ -55,14 +57,15 @@ class Handle(object):
 				##not implemented
 				##add gpt related functions here
 				print("received: ", receivedMessage.Content)
-				##content = "As an AI language model, I cannot have personal opinions. However, according to statistics, Michael Jordan is widely considered one of the greatest basketball players of all time. Other players such as LeBron James, Kobe Bryant, Kareem Abdul-Jabbar, and Magic Johnson are also highly regarded. Ultimately, who is considered the best player depends on personal preference."
-				##content = r"https://oaidalleapiprodscus.blob.core.windows.net/private/org-pUNaTZzDWO5HyEawU3Nltlp9/user-4JZfRsqrs0sThAQ7n0oYjYRa/img-fVxQpSaxNRFEUpr1XzV83oXO.png?st=2023-06-08T04%3A01%3A45Z&se=2023-06-08T06%3A01%3A45Z&sp=r&sv=2021-08-06&sr=b&rscd=inline&rsct=image/png&skoid=6aaadede-4fb3-4698-a8f6-684d7786b067&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2023-06-07T22%3A21%3A30Z&ske=2023-06-08T22%3A21%3A30Z&sks=b&skv=2021-08-06&sig=jp9Xkugc3cWxI9M/SAdVzcr7TkNXx02OxnNQz0dpwjg%3D"
-				##content = r"" + chatBot.response_to_user(receivedMessage.Content.decode("utf-8"))
-				content = chatBot.create_image(receivedMessage.Content.decode("utf-8"))
-				raw_string = r"\\".join(content.split("\\"))
-				replyMessage = reply.TextMessage(toUser, fromUser, raw_string)
-				print("sent: ", raw_string)
+				clarified_type, response = chatBot.response_to_user(receivedMessage.Content.decode("utf-8"))
+				print("sent: ", clarified_type, response)
+				if clarified_type == "text":
+					replyMessage = reply.TextMessage(toUser, fromUser, content)
+				elif clarified_type == "image":
+					pass
+
 				return replyMessage.send()
+
 
 			if receivedMessage.MsgType == "image":
 				mediaId = receivedMessage.MediaId
