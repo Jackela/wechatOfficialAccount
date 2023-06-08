@@ -149,7 +149,7 @@ def create_image(prompt: str, image_number: int = 1, size: str = "1024x1024", re
         size=size,
         response_format=response_format
     )
-    return response.data[0]
+    return response.data[0].url
 
 def create_image_edit(prompt: str, image: str, mask: str = None, image_number: int = 1, size: str = "1024x1024", response_format: str = "url"):
     response = openai.Image.create_edit(
