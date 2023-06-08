@@ -53,13 +53,13 @@ class Handle(object):
 			toUser = receivedMessage.FromUserName
 			fromUser = receivedMessage.ToUserName
 			##guarder type if loops
+			replyMessage = None
 			if receivedMessage.MsgType == "text":
 				##not implemented
 				##add gpt related functions here
 				print("received: ", receivedMessage.Content)
 				clarified_type, response = chatBot.response_to_user(receivedMessage.Content.decode("utf-8"))
 				print("sent: ", clarified_type, response)
-				replyMessage = None
 				if clarified_type == "text":
 					replyMessage = reply.TextMessage(toUser, fromUser, content)
 				elif clarified_type == "image":
