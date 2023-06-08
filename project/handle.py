@@ -56,8 +56,8 @@ class Handle(object):
 				##add gpt related functions here
 				print("received: ", receivedMessage.Content)
 				##content = "As an AI language model, I cannot have personal opinions. However, according to statistics, Michael Jordan is widely considered one of the greatest basketball players of all time. Other players such as LeBron James, Kobe Bryant, Kareem Abdul-Jabbar, and Magic Johnson are also highly regarded. Ultimately, who is considered the best player depends on personal preference."
-				content = r"https://oaidalleapiprodscus.blob.core.windows.net/private/org-pUNaTZzDWO5HyEawU3Nltlp9/user-4JZfRsqrs0sThAQ7n0oYjYRa/img-fVxQpSaxNRFEUpr1XzV83oXO.png?st=2023-06-08T04%3A01%3A45Z&se=2023-06-08T06%3A01%3A45Z&sp=r&sv=2021-08-06&sr=b&rscd=inline&rsct=image/png&skoid=6aaadede-4fb3-4698-a8f6-684d7786b067&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2023-06-07T22%3A21%3A30Z&ske=2023-06-08T22%3A21%3A30Z&sks=b&skv=2021-08-06&sig=jp9Xkugc3cWxI9M/SAdVzcr7TkNXx02OxnNQz0dpwjg%3D"
-				##content = chatBot.response_to_user(receivedMessage.Content.decode("utf-8"))
+				##content = r"https://oaidalleapiprodscus.blob.core.windows.net/private/org-pUNaTZzDWO5HyEawU3Nltlp9/user-4JZfRsqrs0sThAQ7n0oYjYRa/img-fVxQpSaxNRFEUpr1XzV83oXO.png?st=2023-06-08T04%3A01%3A45Z&se=2023-06-08T06%3A01%3A45Z&sp=r&sv=2021-08-06&sr=b&rscd=inline&rsct=image/png&skoid=6aaadede-4fb3-4698-a8f6-684d7786b067&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2023-06-07T22%3A21%3A30Z&ske=2023-06-08T22%3A21%3A30Z&sks=b&skv=2021-08-06&sig=jp9Xkugc3cWxI9M/SAdVzcr7TkNXx02OxnNQz0dpwjg%3D"
+				content = r"" + chatBot.response_to_user(receivedMessage.Content.decode("utf-8"))
 				replyMessage = reply.TextMessage(toUser, fromUser, content)
 				print("sent: ", content)
 				return replyMessage.send()
