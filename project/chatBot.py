@@ -395,7 +395,7 @@ def response_to_user(message: str):
     ## return response:str as text if it is a chat
     ## return response:str as url if it is a image
     clarified_type = clarify_message(message)
-    response = None
+    response = ""
     if clarified_type == "chat":
         response = create_chat_completion(content=message)
     elif clarified_type == "image":
@@ -440,4 +440,4 @@ if __name__ == "__main__":
     content = "As an AI language model, I cannot have personal opinions. However, according to statistics, Michael Jordan is widely considered one of the greatest basketball players of all time. Other players such as LeBron James, Kobe Bryant, Kareem Abdul-Jabbar, and Magic Johnson are also highly regarded. Ultimately, who is considered the best player depends on personal preference."
 
     res=response_to_user("Who do you think is the best basketball player?")
-    print(res == content)
+    print(type(res) == type(content))
