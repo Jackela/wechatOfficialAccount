@@ -59,6 +59,7 @@ class Handle(object):
 				print("received: ", receivedMessage.Content)
 				clarified_type, response = chatBot.response_to_user(receivedMessage.Content.decode("utf-8"))
 				print("sent: ", clarified_type, response)
+				replyMessage = None
 				if clarified_type == "text":
 					replyMessage = reply.TextMessage(toUser, fromUser, content)
 				elif clarified_type == "image":
