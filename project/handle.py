@@ -56,7 +56,7 @@ class Handle(object):
 				##add gpt related functions here
 				print("received: ", receivedMessage.Content)
 				##content = "As an AI language model, I cannot have personal opinions. However, according to statistics, Michael Jordan is widely considered one of the greatest basketball players of all time. Other players such as LeBron James, Kobe Bryant, Kareem Abdul-Jabbar, and Magic Johnson are also highly regarded. Ultimately, who is considered the best player depends on personal preference."
-				content = chatBot.create_chat_completion(receivedMessage.Content.decode("utf-8"))
+				content = chatBot.response_to_user(receivedMessage.Content.decode("utf-8"))
 				replyMessage = reply.TextMessage(toUser, fromUser, content)
 				print("sent: ", content)
 				return replyMessage.send()
