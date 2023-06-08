@@ -441,5 +441,5 @@ def delete_all_fine_tune_models():
 if __name__ == "__main__":  
     content = "As an AI language model, I cannot have personal opinions. However, according to statistics, Michael Jordan is widely considered one of the greatest basketball players of all time. Other players such as LeBron James, Kobe Bryant, Kareem Abdul-Jabbar, and Magic Johnson are also highly regarded. Ultimately, who is considered the best player depends on personal preference."
 
-    res=response_to_user("Who do you think is the best basketball player?")
+    res=response_to_user("I want a picture of a cat")
     print(type(res) == type(content))
