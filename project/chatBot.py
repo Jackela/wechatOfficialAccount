@@ -353,9 +353,54 @@ def cancel_fine_tune(fine_tune_id):
 def delete_fine_tune_model(model):
     return openai.Model.delete(model)
 
+prompt = "Classify whether the following input text is asking for chat or asking for AI-generated Image:"
+def clarify_message(message: str):
 
+    # Define the OpenAI API parameters
+    parameters = {
+        "prompt": prompt,
+        "temperature": 0.5,
+        "max_tokens": 1,
+        "top_p": 1,
+        "frequency_penalty": 0,
+        "presence_penalty": 0
+    }
 
-# for testing
+    # Call the OpenAI API to generate a response
+    response = openai.Completion.create(
+        engine=default_text_model,
+        prompt=prompt+message,
+        max_tokens=100
+    )
+
+    # Extract the generated text
+    model_output = response.choices[0].text.strip()
+    clarified_type = None
+    # Determine if the input text was classified as a "chat" or "image" message
+    if "chat" in model_output.lower():
+        clarified_type = "chat"
+    elif "image" in model_output.lower():
+        clarified_type = "image"
+    else: ## unexcepted result
+        clarified_type = model_output
+    return clarified_type
+
+def response_to_user(message: str):
+    ## return response:str as text if it is a chat
+    ## return response:str as url if it is a image
+    clarified_type = clarify_message(message)
+    response = None
+    if clarified_type == "chat":
+        response = create_chat_completion(content=message)
+    elif clarified_type == "image":
+        response = create_image(prompt=message)
+    else:
+        ## log error
+        ## not implemented
+        pass
+    return response
+
+## for testing
 def get_default_model():
     return default_model
 
@@ -384,6 +429,7 @@ def delete_all_fine_tune_models():
         delete_fine_tune_model(model)
     return True
 
+
 if __name__ == "__main__":  
-    res = create_image(prompt="加油华为，加油China。")
+    res=response_to_user("Who do you think is the best basketball player?")
     print(res)
