@@ -398,8 +398,8 @@ def response_to_user(message: str):
     if clarified_type == "chat":
         response = create_chat_completion(content=message)
     elif clarified_type == "image":
-        response = create_image(prompt=message)
-        imageUtils.url_to_image(url=response, filename="temp.jpg")
+        image_url = create_image(prompt=message)
+        imageUtils.url_to_image(url=image_url, filename="temp.jpg")
     """
     else:
         ## log error

@@ -62,7 +62,9 @@ class Handle(object):
 				if clarified_type == "text":
 					replyMessage = reply.TextMessage(toUser, fromUser, content)
 				elif clarified_type == "image":
-					pass
+					imageUtils.url_to_image(response, "temp.jpg")
+					mediaId = imageUtils.upload_image("temp.jpg", accessToken.get_current_access_token())
+					replyMessage = reply.ImageMessage(toUser, fromUser, mediaId)
 
 				return replyMessage.send()
 
