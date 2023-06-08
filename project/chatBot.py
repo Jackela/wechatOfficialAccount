@@ -399,8 +399,9 @@ def response_to_user(message: str):
         response = create_chat_completion(content=message)
     elif clarified_type == "image":
         image_url = create_image(prompt=message)
-        imageUtils.url_to_image(url=image_url, filename="temp.jpg")
-        imageUtils.upload_image(access_token, filepath)
+        imageUtils.url_to_image(url=image_url)
+        media_id = imageUtils.upload_image(access_token, filepath)
+        return media_id
     """
     else:
         ## log error
