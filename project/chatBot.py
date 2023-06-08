@@ -438,4 +438,4 @@ def delete_all_fine_tune_models():
 
 if __name__ == "__main__":  
     res=response_to_user("Who do you think is the best basketball player?")
-    print(res)
+    print(type(res))
