@@ -14,7 +14,7 @@ directory = os.path.dirname(os.path.abspath(__file__))
 # Get the relative path from chatBot.py to config.json
 config_path = os.path.join(directory, 'config.json')
 
-access_token = accessToken.getAccessToken()
+access_token = accessToken.get_current_access_token()
 
 def initialize_api_key():
     with open(config_path) as config:

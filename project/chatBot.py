@@ -400,6 +400,7 @@ def response_to_user(message: str):
     elif clarified_type == "image":
         image_url = create_image(prompt=message)
         imageUtils.url_to_image(url=image_url, filename="temp.jpg")
+        imageUtils.upload_image(access_token, filepath)
     """
     else:
         ## log error

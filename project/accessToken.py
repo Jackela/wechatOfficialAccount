@@ -30,9 +30,9 @@ def getAccessToken():
         json.dump({'access_token': access_token, 'expires_at': expires_at}, f)
 def get_current_access_token():
     with open(access_token_path, 'r') as f:
-        access_token = f['access_token']
+        access_token = json.load(f)['access_token']
         return access_token
-        
+
 class AccessToken(object):
     def __init__(self):
         self.__accessToken = ""
