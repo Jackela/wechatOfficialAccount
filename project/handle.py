@@ -4,7 +4,22 @@ import receive
 import reply
 import openai
 import chatBot
+import os
+import json
 openai.api_key = "Replace"
+openai.api_key = ""  # intialize global api key var
+# Get the directory where chatBot.py is located
+chatbot_directory = os.path.dirname(os.path.abspath(__file__))
+
+# Get the relative path from chatBot.py to config.json
+config_path = os.path.join(chatbot_directory, 'config.json')
+
+def initialize_api_key():
+    with open(config_path) as config:
+        config = json.load(config)
+        openai.api_key = config["openAI"]["apiKey"]
+
+initialize_api_key()
 
 class Handle(object):
 	def GET(self):
@@ -40,7 +55,8 @@ class Handle(object):
 				##not implemented
 				##add gpt related functions here
 				print("received: ", receivedMessage.Content)
-				content = chatBot.response_to_user(receivedMessage.Content.decode("utf-8"))
+				content = "test"
+				##content = chatBot.response_to_user(receivedMessage.Content.decode("utf-8"))
 				print("sent: ", content)
 				replyMessage = reply.TextMessage(toUser, fromUser, content)
 				return replyMessage.send()

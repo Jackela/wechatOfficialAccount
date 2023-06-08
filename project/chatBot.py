@@ -99,7 +99,7 @@ def create_chat_completion(content: str, role: str = "user", name: Optional[str]
         params["temperature"] = temperature
         
     if top_p is not None:
-        params["top_p"] = top_p
+        params["top_p"] = top_ppip
         
     if n is not None:
         params["n"] = n
