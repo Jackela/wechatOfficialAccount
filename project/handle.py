@@ -59,8 +59,9 @@ class Handle(object):
 				##content = r"https://oaidalleapiprodscus.blob.core.windows.net/private/org-pUNaTZzDWO5HyEawU3Nltlp9/user-4JZfRsqrs0sThAQ7n0oYjYRa/img-fVxQpSaxNRFEUpr1XzV83oXO.png?st=2023-06-08T04%3A01%3A45Z&se=2023-06-08T06%3A01%3A45Z&sp=r&sv=2021-08-06&sr=b&rscd=inline&rsct=image/png&skoid=6aaadede-4fb3-4698-a8f6-684d7786b067&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2023-06-07T22%3A21%3A30Z&ske=2023-06-08T22%3A21%3A30Z&sks=b&skv=2021-08-06&sig=jp9Xkugc3cWxI9M/SAdVzcr7TkNXx02OxnNQz0dpwjg%3D"
 				##content = r"" + chatBot.response_to_user(receivedMessage.Content.decode("utf-8"))
 				content = chatBot.create_image(receivedMessage.Content.decode("utf-8"))
-				replyMessage = reply.TextMessage(toUser, fromUser, content)
-				print("sent: ", content)
+				raw_string = r"\\".join(content.split("\\"))
+				replyMessage = reply.TextMessage(toUser, fromUser, raw_string)
+				print("sent: ", raw_string)
 				return replyMessage.send()
 
 			if receivedMessage.MsgType == "image":
