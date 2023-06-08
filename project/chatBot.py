@@ -1,12 +1,18 @@
 import openai
 import time
+import os
 import json
 from typing import List, Union, Dict, Optional
 
 openai.api_key = ""  # intialize global api key var
+# Get the directory where chatBot.py is located
+chatbot_directory = os.path.dirname(os.path.abspath(__file__))
+
+# Get the relative path from chatBot.py to config.json
+config_path = os.path.join(chatbot_directory, 'config.json')
 
 def initialize_api_key():
-    with open("project\config.json") as config:
+    with open(config_path) as config:
         config = json.load(config)
         openai.api_key = config["openAI"]["apiKey"]
 
