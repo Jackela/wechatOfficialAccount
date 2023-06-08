@@ -4,6 +4,7 @@ import os
 import json
 from typing import List, Union, Dict, Optional
 import imageUtils
+import accessToken
 # Get the directory where chatBot.py is located
 directory = os.path.dirname(os.path.abspath(__file__))
 
