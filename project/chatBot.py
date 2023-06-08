@@ -394,8 +394,9 @@ def clarify_message(message: str):
 def response_to_user(message: str):
     ## return response:str as text if it is a chat
     ## return response:str as url if it is a image
-    """
     clarified_type = clarify_message(message)
+
+    """
     response = ""
     if clarified_type == "chat":
         response = create_chat_completion(content=message)
