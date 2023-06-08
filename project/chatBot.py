@@ -410,7 +410,7 @@ def response_to_user(message: str):
         ## not implemented
         pass
     """
-    return create_chat_completion(content=message)
+    return response
 
 ## for testing
 def get_default_model():
