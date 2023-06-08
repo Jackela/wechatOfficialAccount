@@ -53,7 +53,6 @@ class Handle(object):
 			toUser = receivedMessage.FromUserName
 			fromUser = receivedMessage.ToUserName
 			##guarder type if loops
-			replyMessage = None
 			if receivedMessage.MsgType == "text":
 				##not implemented
 				##add gpt related functions here
@@ -62,11 +61,13 @@ class Handle(object):
 				print("sent: ", clarified_type, response)
 				if clarified_type == "text":
 					replyMessage = reply.TextMessage(toUser, fromUser, content)
+					return replyMessage.send()
+
 				elif clarified_type == "image":
 					imageUtils.url_to_image(response, "temp.jpg")
 					mediaId = imageUtils.upload_image("temp.jpg", accessToken.get_current_access_token())
 					replyMessage = reply.ImageMessage(toUser, fromUser, mediaId)
+					return replyMessage.send()
 
-				return replyMessage.send()
 
 		return "success"
