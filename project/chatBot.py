@@ -150,7 +150,7 @@ def create_image(prompt: str, image_number: int = 1, size: str = "1024x1024", re
         size=size,
         response_format=response_format
     )
-    return response.data
+    return response.data.url
 
 def create_image_edit(prompt: str, image: str, mask: str = None, image_number: int = 1, size: str = "1024x1024", response_format: str = "url"):
     response = openai.Image.create_edit(
@@ -401,10 +401,6 @@ def response_to_user(message: str):
     elif clarified_type == "image":
         response = create_image(prompt=message)
     """
-    if clarified_type == "chat":
-        response = create_chat_completion(content=message)
-    elif clarified_type == "image":
-        response = create_image(prompt=message)
     else:
         ## log error
         ## not implemented
