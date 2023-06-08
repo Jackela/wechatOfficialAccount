@@ -23,9 +23,11 @@ def b64_json_to_image(b64_json):
 
 def url_to_image(url:str, file_name:str="image.jpg"):
     response = requests.get(url)
-    with open(f"project\{file_name}", "wb") as f:
+    file_path = f"project\{file_name}"
+    with open(file_path, "wb") as f:
         f.write(response.content)
-
+    return file_path
+    
 import requests
 
 def upload_image(access_token: str, filepath: str) -> str:

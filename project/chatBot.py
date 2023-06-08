@@ -401,7 +401,7 @@ def response_to_user(message: str):
         return clarified_type, response
     elif clarified_type == "image":
         image_url = create_image(prompt=message)
-        imageUtils.url_to_image(url=image_url)
+        filepath = imageUtils.url_to_image(url=image_url)
         media_id = imageUtils.upload_image(accessToken.get_current_access_token(), filepath)
         return clarified_type, media_id
     """
