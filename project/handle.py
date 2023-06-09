@@ -8,6 +8,7 @@ import json
 import imageutils
 import accesstoken
 import chatbot
+import asyncio
 # Get the directory where chatbot.py is located
 directory = os.path.dirname(os.path.abspath(__file__))
 

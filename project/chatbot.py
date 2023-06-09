@@ -416,7 +416,6 @@ def response_to_user(message: str):
         pass
     """
         response = "Generating image, please wait..."
-        asyncio.ensure_future(send_image(message, user_id))
         return clarified_type, response
 
 ##客服接口 发送图片消息
@@ -473,4 +472,5 @@ def delete_all_fine_tune_models():
 
 if __name__ == "__main__":  
     message = "I want a image of cat."
-    send_image(message, "k740724287")
+    res = response_to_user(message)
+    print(res)
