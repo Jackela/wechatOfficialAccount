@@ -398,11 +398,12 @@ def response_to_user(message: str):
     clarified_type = clarify_message(message)
     response = ""
     if clarified_type == "chat":
-        response = create_chat_completion(content=message)
+        response = create_chat_completion(content=message)## shallow copy
+        return response
     elif clarified_type == "image":
         response = "Generating image, please wait..."
         asyncio.create_task(send_image(message, toUser))
-    return response
+        return response
 
 ##客服接口 发送图片消息
 async def send_image(prompt: str, user_id: str):
