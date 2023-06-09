@@ -399,24 +399,10 @@ def response_to_user(message: str):
     response = ""
     if clarified_type == "chat":
         response = create_chat_completion(content=message)
-        return clarified_type, response
     elif clarified_type == "image":
-        """
-        ## deprecated
-        ## change to async method
-        image_url = create_image(prompt=message)
-        filepath = imageutils.url_to_image(url=image_url)
-        media_id = imageutils.upload_image(accesstoken.get_current_access_token(), filepath)
-        return clarified_type, media_id
-        """
-        """
-    else:
-        ## log error
-        ## not implemented
-        pass
-    """
         response = "Generating image, please wait..."
-        return clarified_type, response
+        asyncio.create_task(send_image(message, toUser))
+    return response
 
 ##客服接口 发送图片消息
 async def send_image(prompt: str, user_id: str):
@@ -424,6 +410,7 @@ async def send_image(prompt: str, user_id: str):
     image_url = create_image(prompt=prompt)
     filepath = imageutils.url_to_image(url=image_url)
     media_id = imageutils.upload_image(access_token, filepath)
+    url = 'https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token=' + access_token
     headers = {'content-type': 'application/json', 'charset': 'utf-8'}
     data = {
         'touser': user_id,
@@ -431,15 +418,15 @@ async def send_image(prompt: str, user_id: str):
         'image': {
             'media_id': media_id
         }
-
     }
-    # 发送客服消息
-    response = requests.post('https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token=' + access_token,
-            json=data, headers=headers)
-    if response.status_code == 200:
-        print('图片已发送！')
-    else:
-        print('发送失败！')
+    
+    async with aiohttp.ClientSession() as session:
+        async with session.post(url, json=data, headers=headers) as response:
+            if response.status == 200:
+                print('图片已发送！')
+            else:
+                print('发送失败！')
+
 ## for testing
 def get_default_model():
     return default_model
