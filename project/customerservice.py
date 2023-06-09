@@ -1,8 +1,8 @@
 import requests
 import json
-
+import accesstoken
 def add_custom_service_account(kf_account, nickname, password):
-    url = 'https://api.weixin.qq.com/customservice/kfaccount/add?access_token=ACCESS_TOKEN'
+    url = 'https://api.weixin.qq.com/customservice/kfaccount/add?access_token='+ accesstoken.get_current_access_token()
     headers = {'Content-Type': 'application/json'}
     data = {
         "kf_account" : kf_account,
