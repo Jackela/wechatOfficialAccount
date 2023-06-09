@@ -9,6 +9,7 @@ access_token_path = os.path.join(directory, 'access_token.json')
 def initialize_token():
     with open(access_token_path, 'r') as f:
         config = json.load(f)
+        ##read the toekn and expires_at from the file
         access_token, expires_at = config['access_token'], config['expires_at']
 
         return access_token, expires_at
