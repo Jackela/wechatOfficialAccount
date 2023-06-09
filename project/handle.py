@@ -64,8 +64,8 @@ class Handle(object):
 					replyMessage = reply.TextMessage(toUser, fromUser, response)
 					return replyMessage.send()
 				elif clarified_type == "image":
-					asyncio.ensure_future(chatbot.send_image(receivedMessage.Content, toUserName))
-					replyMessage = reply.TextMessage(toUserName, fromUserName, response)
+					asyncio.ensure_future(chatbot.send_image(receivedMessage.Content, toUser))
+					replyMessage = reply.TextMessage(toUser, fromUser, response)
 					return replyMessage.send()
 
 		return "success"
