@@ -65,6 +65,7 @@ class Handle(object):
 					return replyMessage.send()
 				elif clarified_type == "image":
 					replyMessage = reply.TextMessage(toUser, fromUser, response)
+					await chatbot.send_image(response, toUser)
 					return replyMessage.send()
 
 		return "success"

@@ -403,7 +403,10 @@ def response_to_user(message: str, user_id:str):
         response = "Generating image, please wait..."
         asyncio.create_task(send_image(message, user_id))
         return response
-
+        
+def response_to_user_async(message: str, user_id: str):
+    loop = asyncio.get_event_loop()
+    return loop.run_until_complete(response_to_user(message, user_id))
 ##客服接口 发送图片消息
 async def send_image(prompt: str, user_id: str):
     access_token = accesstoken.get_current_access_token()  # 获取 access_token
