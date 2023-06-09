@@ -417,11 +417,20 @@ def send_image(prompt: str, user_id: str):
 
     url = 'https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token=' + access_token
     headers = {'content-type': 'application/json', 'charset': 'utf-8'}
+    """
     data = {
         'touser': user_id,
         'msgtype': 'image',
         'image': {
         'media_id': media_id
+        }
+    }
+        """
+    data = {
+        'touser': user_id,
+        'msgtype': 'text',
+        "text": {
+            'content': media_id
         }
     }
 
