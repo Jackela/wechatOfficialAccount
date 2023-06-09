@@ -44,7 +44,8 @@ class Handle(object):
 			return "Check Signature"
 	
 	def POST(self):
-		
+		loop = asyncio.new_event_loop()
+		asyncio.set_event_loop(loop)
 		webData = web.data()
 		print("||Web data:", webData)
 		receivedMessage = receive.parseXml(webData)
@@ -65,7 +66,6 @@ class Handle(object):
 					return replyMessage.send()
 				elif clarified_type == "image":
 					replyMessage = reply.TextMessage(toUser, fromUser, response)
-					await chatbot.send_image(response, toUser)
 					return replyMessage.send()
 
 		return "success"
