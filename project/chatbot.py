@@ -398,10 +398,10 @@ def response_to_user(message: str):
     clarified_type = clarify_message(message)
     if clarified_type == "chat":
         response = create_chat_completion(content=message)## shallow copy
-        return response
+        return clarified_type, response
     elif clarified_type == "image":
         response = "Generating image, please wait..."
-        return response
+        return clarified_type, response
 
 ##客服接口 发送图片消息
 async def send_image(prompt: str, user_id: str):
