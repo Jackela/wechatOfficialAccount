@@ -43,7 +43,7 @@ class Handle(object):
 		else:
 			return "Check Signature"
 	
-	async def POST(self):
+	def POST(self):
 		
 		webData = web.data()
 		print("||Web data:", webData)
