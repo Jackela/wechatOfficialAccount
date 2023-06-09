@@ -392,7 +392,7 @@ def clarify_message(message: str):
         clarified_type = model_output
     return clarified_type
 
-def response_to_user(message: str, user_id:str, loop):
+async def response_to_user(message: str, user_id:str, loop):
     ## return response:str as text if it is a chat
     ## return response:str as url if it is a image
     asyncio.run(send_image(message, user_id, loop))
