@@ -1,0 +1,9 @@
+{
+    "openAI": {
+	        "apiKey": ""
+			    },
+				    "wechat":{
+					        "appId": "",
+							        "appSecret":""
+									    }
+										}   
