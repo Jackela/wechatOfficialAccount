@@ -1,11 +1,13 @@
 import json
 import base64
+import os
 import requests
 import accesstoken
-
+import requests
 ## for testing
 import chatbot
-
+directory = os.path.dirname(os.path.abspath(__file__))
+file_path = os.path.join(directory, 'image.jpg')
 #not tested
 def b64_json_to_image(b64_json):
     # Decode the Base64 string into a UTF-8 encoded JSON string
@@ -23,12 +25,10 @@ def b64_json_to_image(b64_json):
 
 def url_to_image(url:str, file_name:str="image.jpg"):
     response = requests.get(url)
-    file_path = f"project\{file_name}"
     with open(file_path, "wb") as f:
         f.write(response.content)
     return file_path
     
-import requests
 
 def upload_image(access_token: str, filepath: str) -> str:
     url = "https://api.weixin.qq.com/cgi-bin/media/upload"

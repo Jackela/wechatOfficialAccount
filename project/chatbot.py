@@ -2,10 +2,10 @@ import openai
 import time
 import os
 import json
-import asyncio
 from typing import List, Union, Dict, Optional
 import imageutils
 import accesstoken
+import threading
 # Get the directory where ChatBot.py is located
 directory = os.path.dirname(os.path.abspath(__file__))
 
@@ -144,7 +144,7 @@ def create_text_edit(model, message: str, instruction: str):
     return False
 
 # image:str is file encoded in base64
-async def create_image(prompt: str, image_number: int = 1, size: str = "1024x1024", response_format: str = "url"):
+def create_image(prompt: str, image_number: int = 1, size: str = "1024x1024", response_format: str = "url"):
     response = openai.Image.create(
         prompt=prompt,
         n=image_number,
@@ -392,45 +392,43 @@ def clarify_message(message: str):
         clarified_type = model_output
     return clarified_type
 
-async def response_to_user(message: str, user_id:str, loop):
+def response_to_user(message: str, user_id:str):
     ## return response:str as text if it is a chat
     ## return response:str as url if it is a image
-    asyncio.run(send_image(message, user_id, loop))
     clarified_type = clarify_message(message)
     if clarified_type == "chat":
         response = create_chat_completion(content=message)## shallow copy
         return clarified_type, response
     elif clarified_type == "image":
         response = "Generating image, please wait..."
-        await send_image(message, user_id)
+        t = threading.Thread(target=send_image, args=(message, user_id))
+        t.start()
+        print("responsed.")
         return clarified_type, response
 
-def response_to_user_async(message: str, user_id: str):
-    loop = asyncio.get_event_loop()
-    return loop.run_until_complete(response_to_user(message, user_id))
 ##客服接口 发送图片消息
-async def send_image(prompt: str, user_id: str):
-    access_token = accesstoken.get_current_access_token()  # 获取 access_token
+def send_image(prompt: str, user_id: str):
+    ##access_token = accesstoken.get_current_access_token()  # 获取 access_token
     image_url = create_image(prompt=prompt)
     filepath = imageutils.url_to_image(url=image_url)
+    print("image created.")
     media_id = imageutils.upload_image(access_token, filepath)
+
     url = 'https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token=' + access_token
     headers = {'content-type': 'application/json', 'charset': 'utf-8'}
     data = {
         'touser': user_id,
         'msgtype': 'image',
         'image': {
-            'media_id': media_id
+        'media_id': media_id
         }
     }
-    
-    async with aiohttp.ClientSession() as session:
-        async with session.post(url, json=data, headers=headers) as response:
-            if response.status == 200:
-                print('图片已发送！')
-            else:
-                print('发送失败！')
 
+    response = requests.post(url, json=data, headers=headers)
+    if response.status_code == 200:
+        print('图片已发送！')
+    else:
+        print('发送失败！')
 ## for testing
 def get_default_model():
     return default_model
@@ -460,8 +458,16 @@ def delete_all_fine_tune_models():
         delete_fine_tune_model(model)
     return True
 
+def func1():
+    print("func1")
+    t = threading.Thread(target=func2)
+    t.start()
+    print("func1")
+    # create and start a new thread to run func2
 
-if __name__ == "__main__":  
-    message = "I want a image of cat."
-    res = response_to_user(message)
-    print(res)
+def func2():
+    time.sleep(10)
+    print("func2")
+
+if __name__ == "__main__":
+    response_to_user("Image of a cat", "")

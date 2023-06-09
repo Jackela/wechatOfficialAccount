@@ -45,7 +45,7 @@ class Handle(object):
 		else:
 			return "Check Signature"
 	
-	async def POST(self):
+	def POST(self):
 
 		webData = web.data()
 		print("||Web data:", webData)
@@ -60,7 +60,7 @@ class Handle(object):
 				##not implemented
 				##add gpt related functions here
 				print("received: ", receivedMessage.Content)
-				clarified_type, response = await chatbot.response_to_user(receivedMessage.Content.decode("utf-8"), toUser, loop = loop)
+				clarified_type, response = chatbot.response_to_user(receivedMessage.Content.decode("utf-8"), toUser)
 				print("sent: ", response)
 				if clarified_type == "chat":
 					replyMessage = reply.TextMessage(toUser, fromUser, response)
