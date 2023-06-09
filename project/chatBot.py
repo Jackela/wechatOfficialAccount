@@ -2,13 +2,14 @@ import openai
 import time
 import os
 import json
+import asyncio
 from typing import List, Union, Dict, Optional
-import imageUtils
-import accessToken
-# Get the directory where chatBot.py is located
+import imageutils
+import accesstoken
+# Get the directory where ChatBot.py is located
 directory = os.path.dirname(os.path.abspath(__file__))
 
-# Get the relative path from chatBot.py to config.json
+# Get the relative path from ChatBot.py to config.json
 config_path = os.path.join(directory, 'config.json')
 
 def initialize_api_key():
@@ -30,7 +31,7 @@ def create_text_completion(message:str, model:str=None, prompt_text:str=None, su
 
     params = {
         "model": model or default_text_model,
-        "prompt": prompt_text or f"Conversation with OpenAI Chatbot:\nUser: {message}\nAI:",
+        "prompt": prompt_text or f"Conversation with OpenAI ChatBot:\nUser: {message}\nAI:",
         "max_tokens": max_tokens or default_max_tokens
     }
     if suffix is not None:
@@ -143,7 +144,7 @@ def create_text_edit(model, message: str, instruction: str):
     return False
 
 # image:str is file encoded in base64
-def create_image(prompt: str, image_number: int = 1, size: str = "1024x1024", response_format: str = "url"):
+async def create_image(prompt: str, image_number: int = 1, size: str = "1024x1024", response_format: str = "url"):
     response = openai.Image.create(
         prompt=prompt,
         n=image_number,
@@ -400,17 +401,46 @@ def response_to_user(message: str):
         response = create_chat_completion(content=message)
         return clarified_type, response
     elif clarified_type == "image":
+        """
+        ## deprecated
+        ## change to async method
         image_url = create_image(prompt=message)
-        filepath = imageUtils.url_to_image(url=image_url)
-        media_id = imageUtils.upload_image(accessToken.get_current_access_token(), filepath)
+        filepath = imageutils.url_to_image(url=image_url)
+        media_id = imageutils.upload_image(accesstoken.get_current_access_token(), filepath)
         return clarified_type, media_id
-    """
+        """
+        """
     else:
         ## log error
         ## not implemented
         pass
     """
+        response = "Generating image, please wait..."
+        asyncio.ensure_future(send_image(message, user_id))
+        return clarified_type, response
 
+##客服接口 发送图片消息
+async def send_image(prompt: str, user_id: str):
+    access_token = accesstoken.get_current_access_token()  # 获取 access_token
+    image_url = create_image(prompt=prompt)
+    filepath = imageutils.url_to_image(url=image_url)
+    media_id = imageutils.upload_image(access_token, filepath)
+    headers = {'content-type': 'application/json', 'charset': 'utf-8'}
+    data = {
+        'touser': user_id,
+        'msgtype': 'image',
+        'image': {
+            'media_id': media_id
+        }
+
+    }
+    # 发送客服消息
+    response = requests.post('https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token=' + access_token,
+            json=data, headers=headers)
+    if response.status_code == 200:
+        print('图片已发送！')
+    else:
+        print('发送失败！')
 ## for testing
 def get_default_model():
     return default_model
@@ -443,5 +473,4 @@ def delete_all_fine_tune_models():
 
 if __name__ == "__main__":  
     message = "I want a image of cat."
-    image_url = create_image(prompt=message)
-    imageUtils.url_to_image(url=image_url)
+    send_image(message, "k740724287")

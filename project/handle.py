@@ -3,18 +3,18 @@ import hashlib
 import receive
 import reply
 import openai
-import chatBot
 import os
 import json
-import imageUtils
-import accessToken
-# Get the directory where chatBot.py is located
+import imageutils
+import accesstoken
+import chatbot
+# Get the directory where chatbot.py is located
 directory = os.path.dirname(os.path.abspath(__file__))
 
-# Get the relative path from chatBot.py to config.json
+# Get the relative path from chatbot.py to config.json
 config_path = os.path.join(directory, 'config.json')
 
-access_token = accessToken.get_current_access_token()
+access_token = accesstoken.get_current_access_token()
 
 def initialize_api_key():
     with open(config_path) as config:
@@ -57,15 +57,14 @@ class Handle(object):
 				##not implemented
 				##add gpt related functions here
 				print("received: ", receivedMessage.Content)
-				clarified_type, response = chatBot.response_to_user(receivedMessage.Content.decode("utf-8"))
+				clarified_type, response = chatbot.response_to_user(receivedMessage.Content.decode("utf-8"))
 				print("sent: ", clarified_type, response)
 				if clarified_type == "chat":
 					replyMessage = reply.TextMessage(toUser, fromUser, response)
 					return replyMessage.send()
 				elif clarified_type == "image":
-					imageUtils.url_to_image(response)
-					mediaId = imageUtils.upload_image("temp.jpg", accessToken.get_current_access_token())
-					replyMessage = reply.ImageMessage(toUser, fromUser, mediaId)
+					asyncio.ensure_future(chatbot.send_image(receivedMessage.Content, toUserName))
+					replyMessage = reply.TextMessage(toUserName, fromUserName, response)
 					return replyMessage.send()
 
 		return "success"

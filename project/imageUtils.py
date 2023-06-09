@@ -1,10 +1,10 @@
 import json
 import base64
 import requests
-import accessToken
+import accesstoken
 
 ## for testing
-import chatBot
+import chatbot
 
 #not tested
 def b64_json_to_image(b64_json):
@@ -47,4 +47,4 @@ def upload_image(access_token: str, filepath: str) -> str:
         return media_id
 
 if __name__ == "__main__":
-    url_to_image(chatBot.create_image("A running cat"))
+    url_to_image(chatbot.create_image("A running cat"))
