@@ -392,7 +392,7 @@ def clarify_message(message: str):
         clarified_type = model_output
     return clarified_type
 
-def response_to_user(message: str):
+def response_to_user(message: str, user_id:str):
     ## return response:str as text if it is a chat
     ## return response:str as url if it is a image
     clarified_type = clarify_message(message)
@@ -401,7 +401,8 @@ def response_to_user(message: str):
         return clarified_type, response
     elif clarified_type == "image":
         response = "Generating image, please wait..."
-        return clarified_type, response
+        asyncio.create_task(send_image(message, user_id))
+        return response
 
 ##客服接口 发送图片消息
 async def send_image(prompt: str, user_id: str):

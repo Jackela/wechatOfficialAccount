@@ -58,13 +58,12 @@ class Handle(object):
 				##not implemented
 				##add gpt related functions here
 				print("received: ", receivedMessage.Content)
-				clarified_type, response = chatbot.response_to_user(receivedMessage.Content.decode("utf-8"))
+				response = chatbot.response_to_user(receivedMessage.Content.decode("utf-8"), toUser)
 				print("sent: ", response)
 				if clarified_type == "chat":
 					replyMessage = reply.TextMessage(toUser, fromUser, response)
 					return replyMessage.send()
 				elif clarified_type == "image":
-					asyncio.create_task(chatbot.send_image(receivedMessage.Content, toUser))
 					replyMessage = reply.TextMessage(toUser, fromUser, response)
 					return replyMessage.send()
 
