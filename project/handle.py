@@ -60,7 +60,7 @@ class Handle(object):
 				##not implemented
 				##add gpt related functions here
 				print("received: ", receivedMessage.Content)
-				response = chatbot.response_to_user(receivedMessage.Content.decode("utf-8"), toUser)
+				response = chatbot.response_to_user(receivedMessage.Content.decode("utf-8"), toUser, loop = loop)
 				print("sent: ", response)
 				if clarified_type == "chat":
 					replyMessage = reply.TextMessage(toUser, fromUser, response)
