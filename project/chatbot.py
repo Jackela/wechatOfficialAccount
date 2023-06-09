@@ -409,12 +409,13 @@ def response_to_user(message: str, user_id:str):
 
 ##客服接口 发送图片消息
 def send_image(prompt: str, user_id: str):
+    """
     access_token = accesstoken.get_current_access_token()  # 获取 access_token
     image_url = create_image(prompt=prompt)
     filepath = imageutils.url_to_image(url=image_url)
     print("image created.")
     media_id = imageutils.upload_image(access_token, filepath)
-
+    """
     url = 'https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token=' + access_token
     headers = {'content-type': 'application/json', 'charset': 'utf-8'}
     """
@@ -433,7 +434,7 @@ def send_image(prompt: str, user_id: str):
             'content': media_id
         }
     }
-
+    print(data)
     response = requests.post(url, json=data, headers=headers)
     if response.status_code == 200:
         print('图片已发送！')
