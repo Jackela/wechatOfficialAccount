@@ -431,7 +431,7 @@ def send_image(prompt: str, user_id: str):
         'touser': user_id,
         'msgtype': 'text',
         "text": {
-            'content': media_id
+            'content': "test"
         }
     }
     print(data)
