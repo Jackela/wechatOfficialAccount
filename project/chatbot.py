@@ -409,8 +409,8 @@ def response_to_user(message: str, user_id:str):
 
 ##客服接口 发送图片消息
 def send_image(prompt: str, user_id: str):
-    """
     access_token = accesstoken.get_current_access_token()  # 获取 access_token
+    """
     image_url = create_image(prompt=prompt)
     filepath = imageutils.url_to_image(url=image_url)
     print("image created.")
