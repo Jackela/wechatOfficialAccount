@@ -60,6 +60,12 @@ class Handle(object):
 				print("received: ", receivedMessage.Content)
 				response = chatbot.response_to_user(receivedMessage.Content.decode("utf-8"))
 				print("sent: ", response)
-				replyMessage = reply.TextMessage(toUser, fromUser, response)
-				return replyMessage.send()
+				if clarified_type == "chat":
+					replyMessage = reply.TextMessage(toUser, fromUser, response)
+					return replyMessage.send()
+				elif clarified_type == "image":
+					asyncio.create_task(chatbot.send_image(receivedMessage.Content, toUser))
+					replyMessage = reply.TextMessage(toUser, fromUser, response)
+					return replyMessage.send()
+
 		return "success"

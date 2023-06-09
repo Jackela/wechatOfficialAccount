@@ -401,7 +401,6 @@ def response_to_user(message: str):
         return response
     elif clarified_type == "image":
         response = "Generating image, please wait..."
-        asyncio.create_task(send_image(message, toUser))
         return response
 
 ##客服接口 发送图片消息
