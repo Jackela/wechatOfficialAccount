@@ -16,6 +16,8 @@ directory = os.path.dirname(os.path.abspath(__file__))
 config_path = os.path.join(directory, 'config.json')
 
 access_token = accesstoken.get_current_access_token()
+loop = asyncio.new_event_loop()
+asyncio.set_event_loop(loop)
 
 def initialize_api_key():
     with open(config_path) as config:
@@ -44,8 +46,7 @@ class Handle(object):
 			return "Check Signature"
 	
 	def POST(self):
-		loop = asyncio.new_event_loop()
-		asyncio.set_event_loop(loop)
+
 		webData = web.data()
 		print("||Web data:", webData)
 		receivedMessage = receive.parseXml(webData)
